@@ -76,15 +76,14 @@ Instead of typing code like a normal human, you now have to **catch falling code
 [code-editor.webm](https://github.com/user-attachments/assets/cf059496-4f29-4d98-a95a-8969f91b333e)
 
 <details>
-    <summary>🗡️ Roguelike Video Presentation </summary>
-
-[roguelike.webm](https://github.com/user-attachments/assets/ffc35054-e3de-4e12-ac63-f1e3520f2ee8)
-</details>
-
-
-<details>
     <summary>⚡ CodeRush Video Presentation </summary>
     https://drive.google.com/file/d/1t6_92z2R_ntOok2yyzjklHpKyxoKZl_g/view
+</details>
+
+<details>
+    <summary>🗡️ Roguelike (BETA) Video Presentation </summary>
+
+[roguelike.webm](https://github.com/user-attachments/assets/ffc35054-e3de-4e12-ac63-f1e3520f2ee8)
 </details>
 
 ## 📸 Screenshots
@@ -102,6 +101,8 @@ Instead of typing code like a normal human, you now have to **catch falling code
 
 ✅ Using Tetris as an IDE  
 ✅ Spatial reasoning for coding problems  
+
+With some tweaks and backend, this could be a useful tool as a coding qualifier, as we doubt any LLM alone could pass this test.
 
 ## 🤝 Credits
 
