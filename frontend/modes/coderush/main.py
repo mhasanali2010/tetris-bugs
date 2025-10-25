@@ -1,12 +1,29 @@
-import timer
-from controls import Controller
-from engine.game import BaseGameManager
-from js import document, setInterval, window
-from modal import continue_modal
+from js import window, document, setInterval
 from pyodide.ffi import create_proxy
+from controls import Controller
+import timer
+from modal import continue_modal
 from ui_manager import UIManager
+from engine.game import BaseGameManager
+
 
 game_manager = BaseGameManager(40, 25)
+
+
+def pause() -> None:
+    """Pause the game."""
+    document.getElementById("pause-screen").hidden = False  # unhide
+    timer.pause_timer()
+
+
+def resume() -> None:
+    """Resume the game."""
+    document.getElementById("pause-screen").hidden = True  # hide
+    # Focus the input field
+    input_box = document.getElementById("text-input")
+    if input_box:
+        input_box.focus()
+    timer.resume_timer()
 
 
 def main() -> None:
@@ -45,8 +62,19 @@ def main() -> None:
     restart_proxy = create_proxy(lambda *_: ui_manager.restart_game())
     restart_btn.addEventListener("click", restart_proxy)
 
-    # Bind continue modal button and start timer
+    # Bind pause button
+    pause_btn = document.getElementById("pause-btn")
+    if pause_btn:
+        pause_proxy = create_proxy(lambda *_: pause())
+        pause_btn.addEventListener("click", pause_proxy)
 
+    # Bind resume button
+    resume_btn = document.getElementById("resume-btn")
+    if resume_btn:
+        resume_proxy = create_proxy(lambda *_: resume())
+        resume_btn.addEventListener("click", resume_proxy)
+
+    # Bind continue modal button and start timer
     continue_btn = document.getElementById("continue-btn")
     continue_proxy = create_proxy(lambda _evt: continue_modal("modal-bg"))
     continue_btn.addEventListener("click", continue_proxy)
@@ -55,6 +83,19 @@ def main() -> None:
     handle_key_proxy = create_proxy(lambda evt: controller.handle_key(evt))
     window.addEventListener("keydown", handle_key_proxy)
 
+    # ✅ Global ESC key handler
+    def handle_global_keys(evt):
+        if evt.key == "Escape":
+            pause_screen = document.getElementById("pause-screen")
+            if pause_screen.hidden:
+                pause()
+            else:
+                resume()
+
+    esc_proxy = create_proxy(handle_global_keys)
+    window.addEventListener("keydown", esc_proxy)
+
+    # Game tick loop
     tick_proxy = create_proxy(lambda *_: (game_manager.tick(), ui_manager.render()))
     setInterval(tick_proxy, 500)
 
